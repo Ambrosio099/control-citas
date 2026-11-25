@@ -25,7 +25,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
 })->name('dashboard');
 
-    Route::resource('citas', CitaController::class)->only(['index', 'create', 'store', 'destroy']);
+Route::resource('citas', CitaController::class)
+    ->only(['index', 'create', 'store', 'show', 'destroy']);
+
 });
 
 require __DIR__.'/settings.php';

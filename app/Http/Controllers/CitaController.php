@@ -53,6 +53,25 @@ class CitaController extends Controller
         return redirect('/citas');
     }
 
+public function show(Request $request, Cita $cita)
+{
+    abort_unless($cita->user_id === $request->user()->id, 403);
+
+    $cita->load('servicio');
+
+    return Inertia::render('citas/Show', [
+        'cita' => [
+            'id' => $cita->id,
+            'fecha' => $cita->fecha_hora->format('d/m/Y H:i'),
+            'estado' => $cita->estado,
+            'servicio' => $cita->servicio->nombre,
+            'duracion' => $cita->servicio->duracion_minutos,
+            'precio' => $cita->servicio->precio,
+            'notas' => $cita->notas,
+        ],
+    ]);
+}
+
     public function destroy(Request $request, Cita $cita)
     {
         abort_unless($cita->user_id === $request->user()->id, 403);

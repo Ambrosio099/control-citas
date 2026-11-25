@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 
@@ -26,29 +27,57 @@ function enviar() {
         <form class="space-y-4" @submit.prevent="enviar">
             <div>
                 <label class="block">Servicio</label>
-                <select v-model="form.servicio_id" class="w-full rounded border bg-neutral-900 p-2 text-white">
-                    <select v-model="form.servicio_id" class="w-full rounded border bg-neutral-900 p-2 text-white [color-scheme:dark]">
-                    </select>
-    <option :value="null" disabled class="bg-neutral-900 text-white">Elige un servicio</option>
-    <option v-for="s in servicios" :key="s.id" :value="s.id" class="bg-neutral-900 text-white">
-        {{ s.nombre }} ({{ s.duracion_minutos }} min)
-    </option>
-</select>
-                <p v-if="form.errors.servicio_id" class="text-red-500">{{ form.errors.servicio_id }}</p>
+
+                <select
+                    v-model="form.servicio_id"
+                    class="w-full rounded border bg-neutral-900 p-2 text-white [color-scheme:dark]"
+                >
+                    <option :value="null" disabled>
+                        Elige un servicio
+                    </option>
+
+                    <option
+                        v-for="s in servicios"
+                        :key="s.id"
+                        :value="s.id"
+                    >
+                        {{ s.nombre }} ({{ s.duracion_minutos }} min)
+                    </option>
+                </select>
+
+                <p v-if="form.errors.servicio_id" class="text-red-500">
+                    {{ form.errors.servicio_id }}
+                </p>
             </div>
 
             <div>
                 <label class="block">Fecha y hora</label>
-                <input v-model="form.fecha_hora" type="datetime-local" class="w-full rounded border bg-neutral-900 p-2" />
-                <p v-if="form.errors.fecha_hora" class="text-red-500">{{ form.errors.fecha_hora }}</p>
+
+                <input
+                    v-model="form.fecha_hora"
+                    type="datetime-local"
+                    class="w-full rounded border bg-neutral-900 p-2"
+                />
+
+                <p v-if="form.errors.fecha_hora" class="text-red-500">
+                    {{ form.errors.fecha_hora }}
+                </p>
             </div>
 
             <div>
                 <label class="block">Motivo (opcional)</label>
-                <textarea v-model="form.notas" class="w-full rounded border bg-neutral-900 p-2" />
+
+                <textarea
+                    v-model="form.notas"
+                    class="w-full rounded border bg-neutral-900 p-2"
+                />
             </div>
 
-            <button type="submit" :disabled="form.processing" class="rounded bg-blue-600 px-4 py-2 text-white">
+            <button
+                type="submit"
+                :disabled="form.processing"
+                class="rounded bg-blue-600 px-4 py-2 text-white"
+            >
                 Agendar
             </button>
         </form>
