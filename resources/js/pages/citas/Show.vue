@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 
@@ -17,13 +16,11 @@ defineProps<{
 
 <template>
     <div class="mx-auto max-w-xl p-6 text-white">
+        <h1 class="mb-6 text-2xl font-bold">Detalles de la cita</h1>
 
-        <h1 class="mb-6 text-2xl font-bold">
-            Detalles de la cita
-        </h1>
-
-        <div class="space-y-4 rounded-lg border border-neutral-700 bg-neutral-900 p-6">
-
+        <div
+            class="space-y-4 rounded-lg border border-neutral-700 bg-neutral-900 p-6"
+        >
             <div>
                 <p class="text-sm text-neutral-400">Número de cita</p>
                 <p>#{{ cita.id }}</p>
@@ -60,7 +57,6 @@ defineProps<{
                 <p class="text-sm text-neutral-400">Motivo de consulta</p>
                 <p>{{ cita.notas || 'Sin motivo registrado' }}</p>
             </div>
-
         </div>
 
         <Link
@@ -69,6 +65,5 @@ defineProps<{
         >
             Volver a mis citas
         </Link>
-
     </div>
 </template>

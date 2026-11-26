@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Cita;
 use App\Models\Servicio;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class CitaController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $citas = $request->user()->citas()->with('servicio')
             ->orderBy('fecha_hora')->get()
@@ -25,14 +27,14 @@ class CitaController extends Controller
         return Inertia::render('citas/Index', ['citas' => $citas]);
     }
 
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('citas/Create', [
             'servicios' => Servicio::orderBy('nombre')->get(['id', 'nombre', 'duracion_minutos']),
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $datos = $request->validate([
             'servicio_id' => ['required', 'exists:servicios,id'],
@@ -53,26 +55,26 @@ class CitaController extends Controller
         return redirect('/citas');
     }
 
-public function show(Request $request, Cita $cita)
-{
-    abort_unless($cita->user_id === $request->user()->id, 403);
+    public function show(Request $request, Cita $cita): Response
+    {
+        abort_unless($cita->user_id === $request->user()->id, 403);
 
-    $cita->load('servicio');
+        $cita->load('servicio');
 
-    return Inertia::render('citas/Show', [
-        'cita' => [
-            'id' => $cita->id,
-            'fecha' => $cita->fecha_hora->format('d/m/Y H:i'),
-            'estado' => $cita->estado,
-            'servicio' => $cita->servicio->nombre,
-            'duracion' => $cita->servicio->duracion_minutos,
-            'precio' => $cita->servicio->precio,
-            'notas' => $cita->notas,
-        ],
-    ]);
-}
+        return Inertia::render('citas/Show', [
+            'cita' => [
+                'id' => $cita->id,
+                'fecha' => $cita->fecha_hora->format('d/m/Y H:i'),
+                'estado' => $cita->estado,
+                'servicio' => $cita->servicio->nombre,
+                'duracion' => $cita->servicio->duracion_minutos,
+                'precio' => $cita->servicio->precio,
+                'notas' => $cita->notas,
+            ],
+        ]);
+    }
 
-    public function destroy(Request $request, Cita $cita)
+    public function destroy(Request $request, Cita $cita): RedirectResponse
     {
         abort_unless($cita->user_id === $request->user()->id, 403);
         $cita->delete();

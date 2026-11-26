@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Servicio extends Model
 {
-protected $fillable = ['nombre', 'duracion_minutos', 'precio'];
+    protected $fillable = ['nombre', 'duracion_minutos', 'precio'];
 
-public function citas()
-{
-    return $this->hasMany(Cita::class);
-}
+    /**
+     * @return HasMany<Cita, $this>
+     */
+    public function citas(): HasMany
+    {
+        return $this->hasMany(Cita::class);
+    }
 }

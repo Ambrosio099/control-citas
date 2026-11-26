@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-/** @property \App\Models\Servicio $servicio */
+/** @property Servicio $servicio */
 beforeEach(function () {
     $this->servicio = Servicio::create([
         'nombre' => 'Consulta general',

@@ -9,14 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up(): void
-{
-    Schema::create('servicios', function (Blueprint $table) {
-        $table->id();
-        $table->string('nombre');
-        $table->unsignedSmallInteger('duracion_minutos')->default(30);
-        $table->decimal('precio', 8, 2);
-        $table->timestamps();
-    });
-}
+    public function up(): void
+    {
+        Schema::create('servicios', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre');
+            $table->unsignedSmallInteger('duracion_minutos')->default(30);
+            $table->decimal('precio', 8, 2);
+            $table->timestamps();
+        });
+    }
 };

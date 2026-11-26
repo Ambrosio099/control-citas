@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 
@@ -32,15 +31,9 @@ function enviar() {
                     v-model="form.servicio_id"
                     class="w-full rounded border bg-neutral-900 p-2 text-white [color-scheme:dark]"
                 >
-                    <option :value="null" disabled>
-                        Elige un servicio
-                    </option>
+                    <option :value="null" disabled>Elige un servicio</option>
 
-                    <option
-                        v-for="s in servicios"
-                        :key="s.id"
-                        :value="s.id"
-                    >
+                    <option v-for="s in servicios" :key="s.id" :value="s.id">
                         {{ s.nombre }} ({{ s.duracion_minutos }} min)
                     </option>
                 </select>

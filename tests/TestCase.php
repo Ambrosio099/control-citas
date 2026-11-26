@@ -2,12 +2,14 @@
 
 namespace Tests;
 
+use App\Models\Servicio;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Laravel\Fortify\Features;
 
 abstract class TestCase extends BaseTestCase
 {
-    public ?\App\Models\Servicio $servicio = null;
+    public ?Servicio $servicio = null;
+
     protected function skipUnlessFortifyHas(string $feature, ?string $message = null): void
     {
         if (! Features::enabled($feature)) {
