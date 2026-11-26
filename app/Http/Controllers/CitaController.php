@@ -7,6 +7,7 @@ use App\Models\Servicio;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -72,6 +73,53 @@ class CitaController extends Controller
                 'notas' => $cita->notas,
             ],
         ]);
+    }
+
+    public function edit(Request $request, Cita $cita): Response
+    {
+        abort_unless($cita->user_id === $request->user()->id, 403);
+
+        return Inertia::render('citas/Edit', [
+            'cita' => [
+                'id' => $cita->id,
+                'servicio_id' => $cita->servicio_id,
+                'fecha_hora' => $cita->fecha_hora->format('Y-m-d\TH:i'),
+                'notas' => $cita->notas,
+            ],
+            'servicios' => Servicio::orderBy('nombre')
+                ->get(['id', 'nombre', 'duracion_minutos']),
+        ]);
+    }
+
+    public function update(Request $request, Cita $cita): RedirectResponse
+    {
+        abort_unless($cita->user_id === $request->user()->id, 403);
+
+        $datos = $request->validate([
+            'servicio_id' => ['required', 'exists:servicios,id'],
+            'fecha_hora' => [
+                'required',
+                'date',
+                'after:now',
+                Rule::unique('citas', 'fecha_hora')->ignore($cita->id),
+            ],
+            'notas' => ['nullable', 'string', 'max:500'],
+        ], [
+            'fecha_hora.after' => 'La cita debe ser en una fecha futura.',
+            'fecha_hora.unique' => 'Ya hay una cita a esa hora.',
+        ]);
+
+        $hora = Carbon::parse($datos['fecha_hora'])->hour;
+
+        if ($hora < 9 || $hora >= 18) {
+            return back()->withErrors([
+                'fecha_hora' => 'El horario de atención es de 9:00 a 18:00.',
+            ]);
+        }
+
+        $cita->update($datos);
+
+        return redirect('/citas');
     }
 
     public function destroy(Request $request, Cita $cita): RedirectResponse
